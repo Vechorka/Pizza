@@ -4,6 +4,8 @@ import {Header} from "./components/Header/Header";
 import {Categories} from "./components/Categories/Categories";
 import {Sort} from "./components/Sort/Sort";
 import {Pizza} from "./components/Pizza/Pizza";
+import pizzas from './pizzas.json'
+
 
 
 function App() {
@@ -19,7 +21,10 @@ function App() {
                         </div>
                         <h2 className='content__title'>All pizzas</h2>
                         <div className='content__items'>
-                            <Pizza title={'Mexican'} price={'15'}/>
+                            {
+                                pizzas.map((obj)=> (<Pizza title={obj.title} price={obj.price} image={obj.imageUrl}
+                                                           sizes={obj.sizes} types={obj.types}/>))
+                            }
                         </div>
                     </div>
                 </div>
