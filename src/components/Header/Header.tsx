@@ -17,7 +17,7 @@ export const Header = () => {
                           strokeMiterlimit="10" strokeWidth="2" x1="27" x2="20.366" y1="27" y2="20.366"></line>
                 </svg>
                 <input className="Search_input__klILD" placeholder="Поиск пиццы..." value=""/></div>
-            <div className="header__cart"><a className="button button--cart" href="/cart"><span>0 ₽</span>
+            <div className="header__cart"><a className="button button--cart" href="/cart"><span>0 $</span>
                 <div className="button__delimiter"></div>
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

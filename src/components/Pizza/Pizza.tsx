@@ -21,12 +21,12 @@ export const Pizza = (props:PizzaPropsType) => {
         <div className='pizza-block__selector'>
           <ul>
               {
-                  props.types.map(e=><li onClick={()=>{setActiveType(e)}} className={activeType === e ? 'active' : ''}>{typeNames[e]}</li>)
+                  props.types.map(e=><li key={e} onClick={()=>{setActiveType(e)}} className={activeType === e ? 'active' : ''}>{typeNames[e]}</li>)
               }
           </ul>
           <ul>
               {
-                  props.sizes.map((e, i)=><li onClick={()=>{setActiveSize(i)}} className={activeSize === i ? 'active' : ''}>{e} cm.</li>)
+                  props.sizes.map((e, i)=><li key={e} onClick={()=>{setActiveSize(i)}} className={activeSize === i ? 'active' : ''}>{e} cm.</li>)
               }
           </ul>
         </div>
