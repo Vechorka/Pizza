@@ -5,15 +5,18 @@ import {Categories} from "./components/Categories/Categories";
 import {Sort} from "./components/Sort/Sort";
 import {Pizza} from "./components/Pizza/Pizza";
 import {isUint32Array} from "util/types";
+import Skeleton from "./components/Pizza/Skeleton";
 
 function App() {
-    let [items, setItems] = useState<any[]>([])
+    const [items, setItems] = useState<any[]>([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(()=>{
         fetch('https://64456982b80f57f581b98c4e.mockapi.io/items')
             .then(res => res.json())
             .then((arr)=>{
                 setItems(arr)
+                setIsLoading(false)
             })
 
     },[])
@@ -31,9 +34,13 @@ function App() {
                         </div>
                         <h2 className='content__title'>All pizzas</h2>
                         <div className='content__items'>
-                            {
-                                items.map((obj)=> (<Pizza key={obj.id} title={obj.title} price={obj.price} image={obj.imageUrl}
-                                                           sizes={obj.sizes} types={obj.types}/>))
+                            {isLoading
+                                ? [...new Array(6)].map((_, index)=><Skeleton key={index}/>)
+                                : items.map((obj)=> (
+                                    <Pizza key={obj.id} title={obj.title} price={obj.price} image={obj.imageUrl}
+                                                   sizes={obj.sizes} types={obj.types}/>
+
+                                ))
                             }
                         </div>
                     </div>
