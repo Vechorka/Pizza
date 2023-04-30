@@ -1,36 +1,46 @@
 import React, {useState} from "react";
 
-export const Sort = () => {
+export const Sort = (props: any) => {
     const [open, setOpen] = useState(false)
-    const [selected, setSelected] = useState(0)
-    const list = ['rating', 'price', 'alphabet']
+    const list = [
+        {name: 'rating (desc)', sortProperty: 'rating'},
+        {name: 'rating (asc)', sortProperty: '-rating'},
+        {name: 'price (desc)', sortProperty: 'price'},
+        {name: 'price (asc)', sortProperty: '-price'},
+        {name: 'alphabet (desc)', sortProperty: 'title'},
+        {name: 'alphabet (asc)', sortProperty: '-title'},
+    ]
 
-    const sortName = list[selected]
-
-    const onClickListItem = (i:number) => {
-        setSelected(i)
+    const onClickListItem = (i: any) => {
+        props.onChangeSort(i)
         setOpen(false)
     }
 
-  return(
-      <div className="sort">
-        <div className="sort__label">
-          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M10 5C10 5.16927 9.93815 5.31576 9.81445 5.43945C9.69075 5.56315 9.54427 5.625 9.375 5.625H0.625C0.455729 5.625 0.309245 5.56315 0.185547 5.43945C0.061849 5.31576 0 5.16927 0 5C0 4.83073 0.061849 4.68424 0.185547 4.56055L4.56055 0.185547C4.68424 0.061849 4.83073 0 5 0C5.16927 0 5.31576 0.061849 5.43945 0.185547L9.81445 4.56055C9.93815 4.68424 10 4.83073 10 5Z"
-                fill="#2C2C2C"></path>
-          </svg>
-            <b>Sort by:</b><span onClick={()=> setOpen(!open)}>{sortName}</span>
-         </div>
-          { open && (<div className='sort__popup'>
-              <ul>
-                  {
-                      list.map((e, i)=>(<li key={e} onClick={()=>onClickListItem(i)} className={selected === i ? 'active' : ''}>{e}</li>))
-                  }
-              </ul>
+    return (
+        <div className="sort">
+            <div className="sort__label">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 5C10 5.16927 9.93815 5.31576 9.81445 5.43945C9.69075 5.56315 9.54427 5.625 9.375 5.625H0.625C0.455729 5.625 0.309245 5.56315 0.185547 5.43945C0.061849 5.31576 0 5.16927 0 5C0 4.83073 0.061849 4.68424 0.185547 4.56055L4.56055 0.185547C4.68424 0.061849 4.83073 0 5 0C5.16927 0 5.31576 0.061849 5.43945 0.185547L9.81445 4.56055C9.93815 4.68424 10 4.83073 10 5Z"
+                        fill="#2C2C2C"></path>
+                </svg>
+                <b>Sort by:</b><span onClick={() => setOpen(!open)}>{props.sortType.name}</span>
+            </div>
+            {open && (<div className='sort__popup'>
+                <ul>
+                    {
+                        list.map((e, i) => (
+                            <li
+                                key={i}
+                                onClick={() => onClickListItem(e)}
+                                className={props.sortType.sortProperty === e.sortProperty ? 'active' : ''}>
+                                {e.name}
+                            </li>))
+                    }
+                </ul>
 
-          </div>)}
-      </div>
+            </div>)}
+        </div>
 
-  )
+    )
 }

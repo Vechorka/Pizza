@@ -7,22 +7,34 @@ import {Pizza} from "../components/Pizza/Pizza";
 export const Home = () => {
     const [items, setItems] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const [categoryId, setCategoryId] = useState(0)
+    const [sortType, setSortType] = useState({
+        name: 'rating',
+        sortProperty: 'rating'
+    })
 
     useEffect(()=>{
-        fetch('https://64456982b80f57f581b98c4e.mockapi.io/items')
+        const sortBy = sortType.sortProperty.replace('-', '')
+        const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
+        const category = categoryId > 0 ? `category=${categoryId}` : ''
+
+        setIsLoading(true)
+        fetch(
+            `https://64456982b80f57f581b98c4e.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`
+        )
             .then(res => res.json())
             .then((arr)=>{
                 setItems(arr)
                 setIsLoading(false)
             })
         window.scrollTo(0, 0)
-    },[])
+    },[categoryId, sortType])
 
     return (
         <div className='container'>
             <div className={'content__top'}>
-                <Categories/>
-                <Sort/>
+                <Categories value={categoryId} onClickCategory={(i:number)=>{setCategoryId(i)}} />
+                <Sort sortType={sortType} onChangeSort={(i:any)=>{setSortType(i)}} />
             </div>
             <h2 className='content__title'>All pizzas</h2>
             <div className='content__items'>
