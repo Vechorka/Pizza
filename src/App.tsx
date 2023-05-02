@@ -7,6 +7,7 @@ import {
 import {Home} from "./pages/Home";
 import {NotFound} from "./pages/NotFound";
 import {Cart} from "./pages/Cart";
+import {Pagination} from "./components/Pagination/Pagination";
 
 
 function App() {

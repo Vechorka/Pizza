@@ -3,11 +3,13 @@ import {Categories} from "../components/Categories/Categories";
 import {Sort} from "../components/Sort/Sort";
 import Skeleton from "../components/Pizza/Skeleton";
 import {Pizza} from "../components/Pizza/Pizza";
+import {Pagination} from "../components/Pagination/Pagination";
 
 export const Home = ({searchValue}: any) => {
     const [items, setItems] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [categoryId, setCategoryId] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
     const [sortType, setSortType] = useState({
         name: 'rating',
         sortProperty: 'rating'
@@ -17,10 +19,11 @@ export const Home = ({searchValue}: any) => {
         const sortBy = sortType.sortProperty.replace('-', '')
         const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
         const category = categoryId > 0 ? `category=${categoryId}` : ''
+        const search = searchValue ? `&search=${searchValue}` : ''
 
         setIsLoading(true)
         fetch(
-            `https://64456982b80f57f581b98c4e.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`
+            `https://64456982b80f57f581b98c4e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
         )
             .then(res => res.json())
             .then((arr) => {
@@ -28,16 +31,9 @@ export const Home = ({searchValue}: any) => {
                 setIsLoading(false)
             })
         window.scrollTo(0, 0)
-    }, [categoryId, sortType])
+    }, [categoryId, sortType, searchValue, currentPage])
 
-    const pizzas = items
-        .filter((obj) => {
-            if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
-                return true
-            }
-            return false
-        })
-        .map((obj) => (
+    const pizzas = items.map((obj) => (
             <Pizza key={obj.id} title={obj.title} price={obj.price} image={obj.imageUrl}
                    sizes={obj.sizes} types={obj.types}/>))
     const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
@@ -59,6 +55,7 @@ export const Home = ({searchValue}: any) => {
                     : pizzas
                 }
             </div>
+            <Pagination onChangePage={(number:any) => setCurrentPage(number)}/>
         </div>
 
     )
