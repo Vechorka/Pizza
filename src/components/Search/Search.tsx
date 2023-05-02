@@ -5,7 +5,7 @@ import styles from './Search.module.scss'
 export const Search = ({searchValue, setSearchValue}:any) => {
     return (
         <div className={styles.root}>
-            <input value={searchValue} onChange={event => setSearchValue(event.target.value)} className={styles.input} placeholder='Pizzas search' />
+            <input value={searchValue} onChange={event => setSearchValue(event.target.value)} className={styles.input} placeholder='Pizzas search...' />
             {!searchValue && <svg className={styles.icon} enableBackground="new 0 0 32 32" id="EditableLine" version="1.1"
                  viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="14" cy="14" fill="none" id="XMLID_42_" r="9" stroke="#000000" strokeLinecap="round"
