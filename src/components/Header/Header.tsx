@@ -1,7 +1,8 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {Search} from "../Search/Search";
 
-export const Header = () => {
+export const Header = ({searchValue, setSearchValue}:any) => {
     return <div className="header">
         <div className="container">
             <Link to="/">
@@ -11,15 +12,7 @@ export const Header = () => {
                     <div><h1>React Pizza</h1><p>best pizza in the world</p></div>
                 </div>
             </Link>
-            <div className="Search_root__eiX89">
-                <svg className="Search_icon__XMmYc" enableBackground="new 0 0 32 32" id="EditableLine" version="1.1"
-                     viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="14" cy="14" fill="none" id="XMLID_42_" r="9" stroke="#000000" strokeLinecap="round"
-                            strokeLinejoin="round" strokeMiterlimit="10" strokeWidth="2"></circle>
-                    <line fill="none" id="XMLID_44_" stroke="#000000" strokeLinecap="round" strokeLinejoin="round"
-                          strokeMiterlimit="10" strokeWidth="2" x1="27" x2="20.366" y1="27" y2="20.366"></line>
-                </svg>
-                <input className="Search_input__klILD" placeholder="Поиск пиццы..." value=""/></div>
+            <Search searchValue={searchValue} setSearchValue={setSearchValue}/>
             <div className="header__cart">
                 <Link className="button button--cart" to="/cart"><span>0 $</span>
                     <div className="button__delimiter"></div>
