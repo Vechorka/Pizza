@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useContext} from "react";
 import styles from './Search.module.scss'
+import {AppContext} from "../../App";
 
 
-export const Search = ({searchValue, setSearchValue}:any) => {
+export const Search = () => {
+    const {searchValue, setSearchValue}:any = useContext(AppContext)
+
     return (
         <div className={styles.root}>
             <input value={searchValue} onChange={event => setSearchValue(event.target.value)} className={styles.input} placeholder='Pizzas search...' />
