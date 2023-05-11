@@ -7,7 +7,7 @@ import {
 import {Home} from "./pages/Home";
 import {NotFound} from "./pages/NotFound";
 import {Cart} from "./pages/Cart";
-import {Search} from "./components/Search/Search";
+
 
 export const AppContext = createContext({})
 
