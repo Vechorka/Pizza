@@ -5,18 +5,27 @@ import Skeleton from "../components/Pizza/Skeleton";
 import {Pizza} from "../components/Pizza/Pizza";
 import {Pagination} from "../components/Pagination/Pagination";
 import {AppContext} from "../App";
+import {useDispatch, useSelector} from "react-redux";
+import {setCategoryId} from "../redux/slices/filterSlice";
 
 export const Home = () => {
-    const {searchValue}:any = useContext(AppContext)
+    const categoryId = useSelector((state) => state.filter.categoryId)
+    console.log(categoryId)
+    const dispatch = useDispatch()
 
-    const [items, setItems] = useState<any[]>([])
+    const {searchValue} = useContext(AppContext)
+
+    const [items, setItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    const [categoryId, setCategoryId] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
     const [sortType, setSortType] = useState({
         name: 'rating',
         sortProperty: 'rating'
     })
+
+    const onClickCategory = (id) => {
+        dispatch(setCategoryId(id))
+    }
 
     useEffect(() => {
         const sortBy = sortType.sortProperty.replace('-', '')
@@ -44,10 +53,8 @@ export const Home = () => {
     return (
         <div className='container'>
             <div className={'content__top'}>
-                <Categories value={categoryId} onClickCategory={(i: number) => {
-                    setCategoryId(i)
-                }}/>
-                <Sort sortType={sortType} onChangeSort={(i: any) => {
+                <Categories value={categoryId} onClickCategory={onClickCategory}/>
+                <Sort sortType={sortType} onChangeSort={(i) => {
                     setSortType(i)
                 }}/>
             </div>
@@ -58,7 +65,7 @@ export const Home = () => {
                     : pizzas
                 }
             </div>
-            <Pagination onChangePage={(number:any) => setCurrentPage(number)}/>
+            <Pagination onChangePage={(number) => setCurrentPage(number)}/>
         </div>
 
     )

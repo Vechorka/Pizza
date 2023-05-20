@@ -7,14 +7,12 @@ import {
 import {Home} from "./pages/Home";
 import {NotFound} from "./pages/NotFound";
 import {Cart} from "./pages/Cart";
-import {useDispatch, useSelector} from "react-redux";
 
 
 export const AppContext = createContext({})
 
 function App() {
-    const filter = useSelector((state:any) => state.filter.value)
-    const dispatch = useDispatch()
+
 
     const [searchValue, setSearchValue] = useState('')
 
