@@ -1,17 +1,21 @@
 import React, {useContext, useEffect, useState} from "react";
+import { useNavigate } from 'react-router-dom'
 import {Categories} from "../components/Categories/Categories";
-import {Sort} from "../components/Sort/Sort";
+import {Sort, sortList} from "../components/Sort/Sort";
 import Skeleton from "../components/Pizza/Skeleton";
 import {Pizza} from "../components/Pizza/Pizza";
 import {Pagination} from "../components/Pagination/Pagination";
 import {AppContext} from "../App";
 import {useDispatch, useSelector} from "react-redux";
-import {setCategoryId, setCurrentPage} from "../redux/slices/filterSlice";
+import {setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 import axios from "axios";
+import qs from 'qs'
+
 
 export const Home = () => {
     const {categoryId, sort, currentPage} = useSelector((state) => state.filter)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const {searchValue} = useContext(AppContext)
     const [items, setItems] = useState([])
@@ -24,6 +28,20 @@ export const Home = () => {
     const onChangePage = (number) => {
         dispatch(setCurrentPage(number))
     }
+
+    useEffect(()=>{
+        if (window.location.search){
+            const params = qs.parse(window.location.search.substring(1))
+            const sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
+            dispatch(
+                setFilters({
+                    ...params,
+                    sort
+                }
+                )
+            )
+        }
+    },[])
 
     useEffect(() => {
         const sortBy = sort.sortProperty.replace('-', '')
@@ -41,6 +59,16 @@ export const Home = () => {
             })
 
         window.scrollTo(0, 0)
+    }, [categoryId, sort, searchValue, currentPage])
+
+    useEffect(()=>{
+        const queryString = qs.stringify({
+            sortProperty: sort.sortProperty,
+            categoryId,
+            currentPage,
+        })
+
+        navigate(`?${queryString}`)
     }, [categoryId, sort, searchValue, currentPage])
 
     const pizzas = items.map((obj) => (
