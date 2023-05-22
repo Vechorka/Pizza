@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import { useNavigate } from 'react-router-dom'
 import {Categories} from "../components/Categories/Categories";
 import {Sort, sortList} from "../components/Sort/Sort";
@@ -16,6 +16,8 @@ export const Home = () => {
     const {categoryId, sort, currentPage} = useSelector((state) => state.filter)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const isSearch = useRef(false)
+    const isMounted = useRef(false)
 
     const {searchValue} = useContext(AppContext)
     const [items, setItems] = useState([])
@@ -29,21 +31,7 @@ export const Home = () => {
         dispatch(setCurrentPage(number))
     }
 
-    useEffect(()=>{
-        if (window.location.search){
-            const params = qs.parse(window.location.search.substring(1))
-            const sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
-            dispatch(
-                setFilters({
-                    ...params,
-                    sort
-                }
-                )
-            )
-        }
-    },[])
-
-    useEffect(() => {
+    const fetchPizzas = () => {
         const sortBy = sort.sortProperty.replace('-', '')
         const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
         const category = categoryId > 0 ? `category=${categoryId}` : ''
@@ -57,18 +45,44 @@ export const Home = () => {
                 setItems(res.data)
                 setIsLoading(false)
             })
+    }
 
+    useEffect(()=>{
+        if (window.location.search){
+            const params = qs.parse(window.location.search.substring(1))
+            const sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
+            dispatch(
+                setFilters({
+                    ...params,
+                    sort
+                }
+                )
+            )
+            isSearch.current = true
+        }
+    },[])
+
+    useEffect(() => {
         window.scrollTo(0, 0)
+
+        if (!isSearch.current){
+            fetchPizzas()
+        }
+
+        isSearch.current = false
     }, [categoryId, sort, searchValue, currentPage])
 
     useEffect(()=>{
-        const queryString = qs.stringify({
-            sortProperty: sort.sortProperty,
-            categoryId,
-            currentPage,
-        })
+        if (isMounted.current){
+            const queryString = qs.stringify({
+                sortProperty: sort.sortProperty,
+                categoryId,
+                currentPage,
+            })
 
-        navigate(`?${queryString}`)
+            navigate(`?${queryString}`)
+        }
+        isMounted.current = true
     }, [categoryId, sort, searchValue, currentPage])
 
     const pizzas = items.map((obj) => (
