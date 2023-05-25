@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import { useNavigate } from 'react-router-dom'
-import {Categories} from "../components/Categories/Categories";
-import {Sort, sortList} from "../components/Sort/Sort";
+import {Categories} from "../components/Pizza/Categories/Categories";
+import {Sort, sortList} from "../components/Pizza/Sort/Sort";
 import Skeleton from "../components/Pizza/Skeleton";
 import {Pizza} from "../components/Pizza/Pizza";
 import {Pagination} from "../components/Pagination/Pagination";
@@ -86,8 +86,7 @@ export const Home = () => {
     }, [categoryId, sort, searchValue, currentPage])
 
     const pizzas = items.map((obj) => (
-            <Pizza key={obj.id} title={obj.title} price={obj.price} image={obj.imageUrl}
-                   sizes={obj.sizes} types={obj.types}/>))
+            <Pizza key={obj.id} {...obj}/>))
     const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
 
     return (

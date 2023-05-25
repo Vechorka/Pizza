@@ -1,6 +1,6 @@
 import React, {createContext, useState} from 'react';
 import './scss/app.scss';
-import {Header} from "./components/Header/Header";
+import {Header} from "./components/Pizza/Header/Header";
 import {
     Routes, Route,
 } from "react-router-dom";
