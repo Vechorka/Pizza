@@ -31,7 +31,7 @@ export const Home = () => {
         dispatch(setCurrentPage(number))
     }
 
-    const fetchPizzas = () => {
+    const fetchPizzas = async () => {
         const sortBy = sort.sortProperty.replace('-', '')
         const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
         const category = categoryId > 0 ? `category=${categoryId}` : ''
@@ -39,12 +39,18 @@ export const Home = () => {
 
         setIsLoading(true)
 
-        axios
-            .get(`https://64456982b80f57f581b98c4e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-            .then(res => {
-                setItems(res.data)
-                setIsLoading(false)
-            })
+        try {
+            const res = await axios.get(
+                `https://64456982b80f57f581b98c4e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
+            setItems(res.data)
+
+        }
+        catch (error){
+            alert ('Error while getting pizzas')
+        }
+        finally {
+            setIsLoading(false)
+        }
     }
 
     useEffect(()=>{
