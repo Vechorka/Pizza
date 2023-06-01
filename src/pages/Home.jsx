@@ -8,20 +8,21 @@ import {Pagination} from "../components/Pagination/Pagination";
 import {AppContext} from "../App";
 import {useDispatch, useSelector} from "react-redux";
 import {setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
-import axios from "axios";
+
 import qs from 'qs'
+import {fetchPizzasTC} from "../redux/slices/pizzaSlice";
 
 
 export const Home = () => {
     const {categoryId, sort, currentPage} = useSelector((state) => state.filter)
+    const {items, status} = useSelector((state) => state.pizza)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const isSearch = useRef(false)
     const isMounted = useRef(false)
 
     const {searchValue} = useContext(AppContext)
-    const [items, setItems] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+
 
     const onClickCategory = (id) => {
         dispatch(setCategoryId(id))
@@ -31,26 +32,22 @@ export const Home = () => {
         dispatch(setCurrentPage(number))
     }
 
-    const fetchPizzas = async () => {
+    const fetchPizzas = () => {
         const sortBy = sort.sortProperty.replace('-', '')
         const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
         const category = categoryId > 0 ? `category=${categoryId}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
 
-        setIsLoading(true)
+            dispatch(fetchPizzasTC({
+                sortBy,
+                order,
+                category,
+                search,
+                currentPage,
+            }))
 
-        try {
-            const res = await axios.get(
-                `https://64456982b80f57f581b98c4e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-            setItems(res.data)
 
-        }
-        catch (error){
-            alert ('Error while getting pizzas')
-        }
-        finally {
-            setIsLoading(false)
-        }
+
     }
 
     useEffect(()=>{
@@ -102,12 +99,20 @@ export const Home = () => {
                 <Sort />
             </div>
             <h2 className='content__title'>All pizzas</h2>
-            <div className='content__items'>
-                {isLoading
-                    ? skeletons
-                    : pizzas
-                }
-            </div>
+            {status === 'error' ? (
+                <div className='content__error-info'>
+                    <h2>Some error occurred :(</h2>
+                    <p>Unfortunately pizzas do not get. Please try it later</p>
+                </div>
+            ):
+                (<div className='content__items'>
+            {status === 'loading'
+                ? skeletons
+                : pizzas
+            }
+                </div>
+                )
+            }
             <Pagination value={currentPage} onChangePage={onChangePage}/>
         </div>
 
