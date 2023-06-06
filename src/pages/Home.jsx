@@ -5,7 +5,6 @@ import {Sort, sortList} from "../components/Pizza/Sort/Sort";
 import Skeleton from "../components/Pizza/Skeleton";
 import {Pizza} from "../components/Pizza/Pizza";
 import {Pagination} from "../components/Pagination/Pagination";
-import {AppContext} from "../App";
 import {useDispatch, useSelector} from "react-redux";
 import {setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 
@@ -14,14 +13,13 @@ import {fetchPizzasTC} from "../redux/slices/pizzaSlice";
 
 
 export const Home = () => {
-    const {categoryId, sort, currentPage} = useSelector((state) => state.filter)
+    const {categoryId, sort, currentPage , searchValue} = useSelector((state) => state.filter)
     const {items, status} = useSelector((state) => state.pizza)
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const isSearch = useRef(false)
     const isMounted = useRef(false)
-
-    const {searchValue} = useContext(AppContext)
 
 
     const onClickCategory = (id) => {

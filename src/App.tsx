@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React from 'react';
 import './scss/app.scss';
 import {Header} from "./components/Pizza/Header/Header";
 import {
@@ -8,18 +8,11 @@ import {Home} from "./pages/Home";
 import {NotFound} from "./pages/NotFound";
 import {Cart} from "./pages/Cart";
 
-
-export const AppContext = createContext({})
-
 function App() {
-
-
-    const [searchValue, setSearchValue] = useState('')
 
     return (
         <div>
             <div className="wrapper">
-                <AppContext.Provider value={{searchValue, setSearchValue}}>
                     <Header />
                     <div className={'content'}>
                         <Routes>
@@ -28,7 +21,6 @@ function App() {
                             <Route path='*' element={<NotFound/>}/>
                         </Routes>
                     </div>
-                </AppContext.Provider>
             </div>
         </div>
 
