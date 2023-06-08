@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useRef} from "react";
+import {Link, useNavigate} from 'react-router-dom'
 import {Categories} from "../components/Pizza/Categories/Categories";
 import {Sort, sortList} from "../components/Pizza/Sort/Sort";
 import Skeleton from "../components/Pizza/Skeleton";
@@ -86,8 +86,10 @@ export const Home = () => {
         isMounted.current = true
     }, [categoryId, sort, searchValue, currentPage])
 
-    const pizzas = items.map((obj) => (
-            <Pizza key={obj.id} {...obj}/>))
+    const pizzas = items.map((obj) => (<Link key={obj.id} to={`pizza/${obj.id}`}>
+            <Pizza {...obj}/>
+        </Link>
+            ))
     const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
 
     return (
