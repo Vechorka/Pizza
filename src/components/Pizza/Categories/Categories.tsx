@@ -3,12 +3,12 @@ import React, {useState} from "react";
 export const Categories = (props:any) => {
 
     const categories = [
-        'Все',
-        'Мясные',
-        'Вегетарианская',
-        'Гриль',
-        'Острые',
-        'Закрытые'
+        'All',
+        'Meat',
+        'Vegetarians',
+        'Grille',
+        'Spicy',
+        'Closed'
     ]
 
 
