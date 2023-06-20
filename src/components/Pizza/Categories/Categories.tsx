@@ -1,6 +1,11 @@
 import React, {useState} from "react";
 
-export const Categories = (props:any) => {
+type CategoriesType = {
+    value: number
+    onClickCategory: any
+}
+
+export const Categories = (props: CategoriesType) => {
 
     const categories = [
         'All',
