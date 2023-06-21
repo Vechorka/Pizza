@@ -13,8 +13,8 @@ import {fetchPizzasTC} from "../redux/slices/pizzaSlice";
 
 
 export const Home = () => {
-    const {categoryId, sort, currentPage , searchValue} = useSelector((state) => state.filter)
-    const {items, status} = useSelector((state) => state.pizza)
+    const {categoryId, sort, currentPage , searchValue} = useSelector((state:any) => state.filter)
+    const {items, status} = useSelector((state:any) => state.pizza)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -22,12 +22,12 @@ export const Home = () => {
     const isMounted = useRef(false)
 
 
-    const onClickCategory = (id) => {
+    const onClickCategory = (id: number) => {
         dispatch(setCategoryId(id))
     }
 
-    const onChangePage = (number) => {
-        dispatch(setCurrentPage(number))
+    const onChangePage = (page:number) => {
+        dispatch(setCurrentPage(page))
     }
 
     const fetchPizzas = () => {
@@ -36,14 +36,14 @@ export const Home = () => {
         const category = categoryId > 0 ? `category=${categoryId}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
 
-            dispatch(fetchPizzasTC({
+            // @ts-ignore
+        dispatch(fetchPizzasTC({
                 sortBy,
                 order,
                 category,
                 search,
                 currentPage,
             }))
-
 
 
     }
@@ -86,7 +86,7 @@ export const Home = () => {
         isMounted.current = true
     }, [categoryId, sort, searchValue, currentPage])
 
-    const pizzas = items.map((obj) => (<Link key={obj.id} to={`pizza/${obj.id}`}>
+    const pizzas = items.map((obj: any) => (<Link key={obj.id} to={`pizza/${obj.id}`}>
             <Pizza {...obj}/>
         </Link>
             ))
