@@ -2,13 +2,20 @@ import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addItem} from "../../redux/slices/cartSlice";
 
+type PizzaTypeBlock = {
+    id: string
+    title: string
+    price: number
+    imageUrl: string
+    sizes: number[]
+    types: string[]
+}
 
-
-export const Pizza = ({id, title, price, imageUrl, sizes, types}) => {
+export const Pizza = ({id, title, price, imageUrl, sizes, types}: PizzaTypeBlock) => {
     const typeNames = ['thin', 'thick']
 
     const dispatch = useDispatch()
-    const cartItem = useSelector((state)=> state.cart.items.find((obj)=>obj.id === id))
+    const cartItem = useSelector((state: any)=> state.cart.items.find((obj:any)=>obj.id === id))
     const [activeType, setActiveType] = useState(0)
     const [activeSize, setActiveSize] = useState(0)
 
@@ -33,7 +40,8 @@ export const Pizza = ({id, title, price, imageUrl, sizes, types}) => {
         <div className='pizza-block__selector'>
           <ul>
               {
-                  types.map(e=><li key={e} onClick={()=>{setActiveType(e)}} className={activeType === e ? 'active' : ''}>{typeNames[e]}</li>)
+                  types.map(e=><li key={e} onClick={()=>{ // @ts-ignore
+                      setActiveType(e)}} className={activeType === e ? 'active' : ''}>{typeNames[e]}</li>)
               }
           </ul>
           <ul>
