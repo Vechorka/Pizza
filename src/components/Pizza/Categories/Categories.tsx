@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 type CategoriesType = {
     value: number
-    onClickCategory: any
+    onClickCategory: (i:number) => void
 }
 
 export const Categories = (props: CategoriesType) => {
