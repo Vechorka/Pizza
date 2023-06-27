@@ -7,7 +7,13 @@ type SortType = {
     sortProperty: string
 }
 
-export const sortList: SortType[] = [
+type PopupClickType = MouseEvent & {
+    path: Node[];
+    composedPath: (tar?: HTMLElement) => EventTarget[];
+    target: HTMLElement;
+}
+
+    export const sortList: SortType[] = [
     {name: 'rating (desc)', sortProperty: 'rating'},
     {name: 'rating (asc)', sortProperty: '-rating'},
     {name: 'price (desc)', sortProperty: 'price'},
@@ -29,8 +35,9 @@ export const Sort = () => {
     }
 
     useEffect(()=>{
-        const handleClickOutside = (event: any) => {
-            if (!event.composedPath().includes(sortRef.current)) {
+        const handleClickOutside = (e: MouseEvent) => {
+            const _event = e as PopupClickType;
+            if (sortRef.current && !_event.composedPath().includes(sortRef.current)) {
                 setOpen(false)
             }
         }

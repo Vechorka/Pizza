@@ -113,7 +113,7 @@ export const Home = () => {
                 </div>
                 )
             }
-            <Pagination value={currentPage} onChangePage={onChangePage}/>
+            <Pagination onChangePage={onChangePage}/>
         </div>
 
     )
